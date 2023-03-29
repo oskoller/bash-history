@@ -1,63 +1,32 @@
-# .bashrc
 
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
+########### User specific functions ######################
+if [ -f ~/.bash_functions ] ; then
+   . ~/.bash_functions
 fi
+                                                                                                                                                                                                                                                                                 
 
-# User specific aliases and functions
-
-# Python
-export PATH=/share/exp/users/$USER/bin:$PATH
-export LD_LIBRARY_PATH="/usr/local/cuda/lib64/:/usr/lib64/:/opt/intel/compilers_and_libraries_2019.5.281/linux/tbb/lib/intel64_lin/gcc4.7:/opt/intel/compilers_and_libraries_2019.5.281/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2019.5.281/linux/mkl/lib/intel64_lin"
-
-# Save history
-function myLocalHistory()
-{
-        HISTORYLINE=`history | tail -1 | sed 's:^ *[0-9]* *::g' | useHistory`
-        if [ ! -z "$HISTORYLINE" ] ; then
-          ((date +%F.%H-%M-%S | tr -d '\n' ; echo " $HISTORYLINE") >>.history.$USER) 2>/dev/null
-        fi
-}
-function h()
-{
-     tail .history.$USER 2>/dev/null
-}
-function gh()
-{
-     cat .history* | tr -d '\0' | cut -d ' ' -f2- | grep "$1"  2>/dev/null
-}
-function ghg()
-{
-     zgrep -a "$1" .history* | sed -e "s/.history\.\?\([^:]*\):\([^ ]*[0-9]*\) /: \2 \1 ; /" | sort -n 2>/dev/null
-}
-alias useHistory='grep -v "^ls$\|^ll$\|^l$\|^dir$\|^cd \|^h$\|^gh$\|^gh \|^bg$\|^fg$\|^qsm$\|^quser$\|^qstat \|^note \|^mutt\|^std\|^clear$"'
-export PROMPT_COMMAND="myLocalHistory" # comment if you want to disable
-                                       # your local .history file
-
-                                                                 
-############ User specific aliases #######################       
-if [ -f ~/.bashrc.oskoller ]; then                               
-    . ~/.bashrc.oskoller                                         
-fi                                                               
-
-#conda config --set changeps1 False
-#echo $PS1
-#PS1+="<\$(basename \"\$CONDA_DEFAULT_ENV)\">";
-                                                          
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/share/exp/sw/python/Anaconda3-2022.07/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/share/exp/sw/python/Anaconda3-2022.07/etc/profile.d/conda.sh" ]; then
-        . "/share/exp/sw/python/Anaconda3-2022.07/etc/profile.d/conda.sh"
-    else
-        export PATH="/share/exp/sw/python/Anaconda3-2022.07/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
+############ Terminal ####################################                                                                                                                                                                                                                       
+# important, e.g. for tools like wc in combination with Arabic!                                                                                                                                                                                                                  
+export LC_ALL="en_US.UTF-8"                                                                                                                                                                                                                                                      
+export LANG="C"                                                                                                                                                                                                                                                                  
+#locale  > /dev/null 2>&1                                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                                                                 
+# see also http://www.faqs.org/docs/Linux-HOWTO/Bash-Prompt-HOWTO.html                                                                                                                                                                                                           
+WHITE="\[\033[1;37m\]"                                                                                                                                                                                                                                                           
+GREEN="\[\033[0;32m\]"                                                                                                                                                                                                                                                           
+LIGHT_BLUE="\[\033[1;34m\]"                                                                                                                                                                                                                                                      
+YELLOW="\[\033[0;33m\]"                                                                                                                                                                                                                                                          
+LIGHT_YELLOW="\[\033[1;33m\]"                                                                                                                                                                                                                                                    
+PURPLE="\[\033[0;35m\]"                                                                                                                                                                                                                                                          
+LIGHT_PURPLE="\[\033[1;35m\]"                                                                                                                                                                                                                                                    
+NO_COLOUR="\[\033[0m\]"                                                                                                                                                                                                                                                          
+LIGHT_GRAY="\[\033[0;37m\]"                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                                 
+PS1="$LIGHT_GRAY\$(date +%H%M)$YELLOW\u@\h $LIGHT_GRAY\$PWD$NO_COLOUR\n"                                                                                                                                                                                                         
+export PS1                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                 
+LS_COLORS='no=00:fi=00:di=01;34:ln=00;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31:ex=00;32:*.cmd=00;32:*.exe=01;32:*.com=01;32:*.bat=01;32:*.btm=01;32:*.dll=01;32:*.tar=00;32:*.tbz=00;32:*.tgz=00;32:*.rpm=00;32:*.deb=00;32:*.arj=00;32:*.taz=00;32:*.lzh=0
+0;32:*.zip=00;32:*.zoo=00;32:*.z=00;32:*.Z=00;32:*.gz=00;32:*.bz2=00;32:*.tb2=00;32:*.tz2=00;32:*.tbz2=00;32:*.avi=01;35:*.bmp=01;35:*.fli=01;35:*.gif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mng=01;35:*.mov=01;35:*.mpg=01;35:*.pcx=01;35:*.pbm=01;35:*.pgm=01;35:*.png=01;35:*.ppm=0
+1;35:*.tga=01;35:*.tif=01;35:*.xbm=01;35:*.xpm=01;35:*.dl=01;35:*.gl=01;35:*.aiff=00;32:*.au=00;32:*.mid=00;32:*.mp3=00;32:*.ogg=00;32:*.voc=00;32:*.wav=00;32:'                                                                                                                 
+export LS_COLORS                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                 
